@@ -4,10 +4,8 @@ import bottle
 import MySQLdb as mysql
 import datetime
 import dateutil.parser
-import logging
 
 app = application = bottle.Bottle()
-logging.basicConfig(filename='server_error.log',format=logging.BASIC_FORMAT)
 @app.route('/hello/<name:int>')
 def hello(name):
 	return 'Hello %d'%name
@@ -38,7 +36,7 @@ def match(id):
 		parent_dict["matches"] = match_data_list
 		parent_dict["success"] = True
 	except mysql.Error,e:
-		logging.error(e.args)
+		
 		parent_dict["success"] = False
 	return parent_dict
 
