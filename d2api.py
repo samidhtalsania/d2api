@@ -17,7 +17,7 @@ def match(id):
 	try:
 		conn = mysql.connect(host="localhost",user="root",passwd="samidh",db="jdmatches")
 		cursor = conn.cursor()
-		cursor.execute('SELECT id,teamOne,teamOneCnt,teamTwo,teamTwoCnt,ETA FROM jd_matches WHERE  id > %s AND finished = 0',(id,))
+		cursor.execute('SELECT id,teamOne,teamOneCnt,teamTwo,teamTwoCnt,ETA FROM jd_matches WHERE  id > %s AND ETA > UTC_TIMESTAMP()',(id,))
 		data_rows = cursor.fetchall()
 		
 		count = 0
