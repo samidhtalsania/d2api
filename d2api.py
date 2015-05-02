@@ -44,20 +44,19 @@ def match(id):
 
 @app.route('/match/live')
 def match_live():
-	# parent_dict = {}
-	# match_data_list = []
+	
 	live_games = api.get_live_league_games()
-	# parent_dict["success"] = True
-	# for games in live_games["result"]["games"]:
-	# 	child_dict = {}
-	#     try:                                    
-	#         child_dict['radiant_team'] = games["radiant_team"]["team_name"]
-	#         child_dict['dire_team'] = games["dire_team"]["team_name"]
-	#         child_dict['match_id'] = games["match_id"]
-	#         match_data_list.append(child_dict)
-	#     except KeyError:
-	#         parent_dict["success"] = False
-	# parent_dict["matches"] = match_data_list
+	numbers = list()
+	for i in xrange(0,len(live_games["result"]["games"])):
+		try:
+			rad_team = live_games["result"]["games"][i]["radiant_team"]
+			dire_team = live_games["result"]["games"][i]["dire_team"]
+		except KeyError,e :
+			numbers.insert(0,i)
+
+	for number in numbers:
+		del live_games["result"]["games"][number]
+
 
 	return live_games
 
