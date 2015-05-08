@@ -4,6 +4,7 @@ import bottle
 import MySQLdb as mysql
 import datetime
 import dateutil.parser
+import ast,urllib3
 
 from dota2py import api,data
 
@@ -59,6 +60,31 @@ def match_live():
 
 
 	return live_games
+
+@app.route('/match/hero/image/<name>')
+def match_hero_image(name):
+	return api.get_hero_image_url(name)
+
+
+@app.route('/match/item/image/<name>')
+def match_item_image(name):
+	return api.get_item_image_url(name)
+
+
+@app.route('/match/team/image/<logoId>')
+def match_team_image(logoId):
+	endpoint = "https://api.steampowered.com/ISteamRemoteStorage/GetUGCFileDetails/v1/?key=0FDE2DD19573249875BE9751C3FEF1DA&appid=570&ugcid="+logoId
+	http = urllib3.PoolManager()
+	r = http.request('GET', endpoint)
+	parent_dict = {}
+	if(r.status == 200):
+		jsonData = ast.literal_eval(r.data)
+		parent_dict['url'] = jsonData['data']['url']
+		parent_dict['success'] = 'True'
+	else:
+		parent_dict['url'] = ''
+		parent_dict['success'] = 'False'
+	return parent_dict
 
 
 if __name__ == '__main__':
